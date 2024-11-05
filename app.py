@@ -20,6 +20,7 @@ login_manager.init_app(app)
 login_manager.login_view = '/'  # Redirect to root route ("/") for login
 
 # Define the User model
+
 class User(Base, UserMixin):  # Inherit from UserMixin to work with Flask-Login
     __tablename__ = 'user'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True) 
@@ -28,6 +29,7 @@ class User(Base, UserMixin):  # Inherit from UserMixin to work with Flask-Login
     firstname = sqlalchemy.Column(sqlalchemy.String(length=100))
     lastname = sqlalchemy.Column(sqlalchemy.String(length=100))
     active = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
+    isAdmin = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
 
 Base.metadata.create_all(engine)
 
@@ -37,9 +39,15 @@ Session.configure(bind=engine)
 db_session = Session()
 
 def addUser(userName, passWord, firstName, lastName):
-    newUser = User(username=userName, password=passWord, firstname=firstName, lastname=lastName, active=True)
+    newUser = User(username=userName, password=passWord, firstname=firstName, lastname=lastName, active=True, isAdmin = False)
     db_session.add(newUser)
     db_session.commit()
+
+def redirect_back(default = '/', **kwargs):
+    for target in request.args.get('next'), request.referrer:
+        if target and is_safe_link(target):
+            return redirect(target)
+    return redirect(url_for(default, **kwargs))
 
 # Flask-Login user loader
 @login_manager.user_loader

@@ -1,0 +1,3 @@
+FLASK_APP = LandlordRecruitment
+FLASK_ENV = DEBUG
+FLASK_DEBUG = 1
