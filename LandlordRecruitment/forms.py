@@ -17,12 +17,3 @@ class RegisterForm(FlaskForm):
                                               EqualTo("password", "Password not the same")])
     submit = SubmitField("Submit")
 
-    def validate_username(form, field):
-        username = field.data
-        for ch in nickname_data:
-            if not (form.is_char(ch) or ch.isalnum() or ch == '-'):
-                raise ValidationError('昵称中只能包含汉字、数字、字母与下划线')
-        from majcalc.models import User
-        user = User.query.filter(User.nickname == field.data).first()
-        if user:
-            raise ValidationError('昵称已存在')
