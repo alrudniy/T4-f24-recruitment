@@ -4,3 +4,5 @@ Werkzeug
 mariadb
 flask_login
 WTForms
+flask-wtf
+Jinja2

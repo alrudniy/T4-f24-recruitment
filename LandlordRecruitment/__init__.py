@@ -1,10 +1,12 @@
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
 
 App = Flask("LandlordRecruitment")
 App.config.from_pyfile("settings.py")
 db = SQLAlchemy(App)
+bootstrap = Bootstrap(App)
 
 loginManager = LoginManager(App)
 loginManager.login_view = "/login"

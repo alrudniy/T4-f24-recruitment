@@ -1,4 +1,5 @@
 from flask import render_template, redirect, url_for, flash, abort, request, make_response
+from LandlordRecruitment.forms import LoginForm
 from LandlordRecruitment import App, db
 
 @App.route("/")
@@ -12,4 +13,4 @@ def test():
 
 @App.route("/login")
 def login():
-    return "this is a login page"
+    return render_template("login.html", form = LoginForm)
