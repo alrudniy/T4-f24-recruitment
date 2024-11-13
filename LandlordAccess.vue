@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Landlord Access</h1>
-    <form @submit.prevent="sendCode">
+    <form action="">
       <label for="username">Username:</label>
       <input type="text" v-model="username" required aria-label="Username"><br>
 
