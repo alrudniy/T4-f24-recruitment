@@ -8,12 +8,12 @@
       <label for="phone">Phone Number:</label>
       <input type="text" v-model="phone" required aria-label="Phone Number"><br>
 
-      <button type="submit" @click="sendCode">Send Verification Code</button><br>
+      <button type="button" @click="sendCode">Send Verification Code</button><br>
 
       <label for="code">Verification Code:</label>
       <input type="text" v-model="code" aria-label="Verification Code"><br>
 
-      <button type="submit" @click="verifyCode">Verify Code</button>
+      <button type="button" @click="verifyCode">Verify Code</button>
     </form>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default {
         const response = await axios.post('http://localhost:3000/send-code', {
           phone: this.phone
         });
-        console.log(response.data);
+        console.log('Send Code Response:', response.data);
       } catch (error) {
         console.error('Error sending code:', error);
       }
@@ -46,6 +46,7 @@ export default {
           phone: this.phone,
           code: this.code
         });
+        console.log('Verify Code Response:', response.data);
         if (response.data.status === 'approved') {
           alert('Verification successful');
           // Allow access to the form
