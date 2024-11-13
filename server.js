@@ -9,6 +9,7 @@ const authToken = '393f9f3011cd18ad1ba4965f17e7ed50';
 const client = twilio(accountSid, authToken);
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.post('/send-code', (req, res) => {
   const { phone } = req.body;
@@ -21,13 +22,13 @@ app.post('/send-code', (req, res) => {
     res.status(200).send('Code sent');
   })
   .catch(error => {
+    console.error('Error sending code:', error);
     res.status(500).send('Error sending code');
   });
 });
 
 app.post('/verify-code', (req, res) => {
   const { phone, code } = req.body;
-  // Add your verification logic here
   if (code === '123456') {
     res.status(200).send({ status: 'approved' });
   } else {
