@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Family_Promise.png" type="image/png">
+</head>
+<body>
+    <header>
+        <h1>Admin Login</h1>
+    </header>
+    <main>
+        <form id="adminLoginForm">
+            <label for="adminLogin">Email or Phone:</label>
+            <input type="text" id="adminLogin" name="adminLogin" required>
+            <button type="submit" class="admin-homeowner-button">Submit</button>
+        </form>
+        <div id="verificationCode" style="display: none;">
+            <label for="verification">Enter Verification Code:</label>
+            <input type="text" id="verification" name="verification">
+            <button onclick="verifyAdmin()" class="admin-homeowner-button">Verify</button>
+        </div>
+        <script>
+            let adminVerificationCode = '';
+
+            document.getElementById('adminLoginForm').onsubmit = function(e) {
+                e.preventDefault();
+                // Simulate sending verification code
+                adminVerificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit code
+                alert('Verification code sent: ' + adminVerificationCode); // Simulate sending the code
+                document.getElementById('verificationCode').style.display = 'block';
+            };
+
+            function verifyAdmin() {
+                const enteredCode = document.getElementById('verification').value;
+                if (enteredCode === adminVerificationCode) {
+                    alert('Admin verified!');
+                    // Redirect to home.html
+                    window.location.href = 'home.html';
+                } else {
+                    alert('Invalid verification code. Please try again.');
+                }
+            }
+        </script>
+    </main>
+</body>
+</html>
