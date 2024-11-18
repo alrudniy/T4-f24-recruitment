@@ -3,8 +3,8 @@ from LandlordRecruitment import db
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 
-class verification_code():
-    def verification_code(self, code):
+class Verification_code():
+    def __init__ (self, code):
         self.code = code
         self.create_time = datetime.datetime.now().timestamp()
     
@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     phone_number = db.Column(db.String(16), unique = True)
     email_addr = db.Column(db.String(128), unique = True)
     username = db.Column(db.String(40), unique = True)
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String(256))
     first_name = db.Column(db.String(40))
     last_name = db.Column(db.String(40))
     is_admin = db.Column(db.Integer, default = 0)
@@ -24,3 +24,12 @@ class User(db.Model, UserMixin):
     
     def validatePassword(self, password):
         return check_password_hash(self.passwordHash, password)
+    
+class Enquiry(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    phone_number = db.Column(db.String(16))
+    catagory = db.Column(db.Integer)
+    email_addr = db.Column(db.String(128))
+    content = db.Column(db.Text)
+    created_time = db.DateTime()
+    replied = db.Column(db.Integer)
