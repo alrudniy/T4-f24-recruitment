@@ -12,25 +12,53 @@
         <h1>Admin Login</h1>
     </header>
     <main>
-        <form id="adminLoginForm">
+        <form id="adminLoginForm" action="http://localhost:5000/admin/login" method="POST">
             <label for="adminLogin">Email or Phone:</label>
             <input type="text" id="adminLogin" name="adminLogin" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
             <button type="submit" class="admin-homeowner-button">Submit</button>
         </form>
         <div id="verificationCode" style="display: none;">
             <label for="verification">Enter Verification Code:</label>
-            <input type="text" id="verification" name="verification">
+            <input type="text" id="verification" name="verification" required>
             <button onclick="verifyAdmin()" class="admin-homeowner-button">Verify</button>
         </div>
         <script>
             let adminVerificationCode = '';
 
-            document.getElementById('adminLoginForm').onsubmit = function(e) {
+            document.getElementById('adminLoginForm').onsubmit = async function(e) {
                 e.preventDefault();
-                // Simulate sending verification code
-                adminVerificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit code
-                alert('Verification code sent: ' + adminVerificationCode); // Simulate sending the code
-                document.getElementById('verificationCode').style.display = 'block';
+                
+                const adminLogin = document.getElementById('adminLogin').value;
+                const password = document.getElementById('password').value;
+
+                // Send POST request to the backend
+                try {
+                    const response = await fetch('http://localhost:5000/admin/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ adminLogin, password }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    // Handle response from the server
+                    const result = await response.json();
+                    if (result.success) {
+                        adminVerificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit code
+                        alert('Verification code sent: ' + adminVerificationCode); // Simulate sending the code
+                        document.getElementById('verificationCode').style.display = 'block';
+                    } else {
+                        alert(result.message); // Show error message from the server
+                    }
+                } catch (error) {
+                    alert('Error sending request: ' + error.message);
+                }
             };
 
             function verifyAdmin() {

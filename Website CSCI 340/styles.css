@@ -1,6 +1,7 @@
+/* Global Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f0f4f8; /* Light gray */
     margin: 0;
     padding: 0;
     display: flex;
@@ -11,75 +12,85 @@ body {
 }
 
 header {
-    background-color: #4B0082; /* Purple */
+    background-color: #6a1b9a; /* Deep Purple */
     color: white;
     width: 100%;
     padding: 20px 0;
     margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
     margin: 0;
-    font-size: 2.5em;
+    font-size: 2.8em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+nav {
+    margin: 10px 0;
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    margin: 0 10px;
+    margin: 0 15px;
     font-size: 1.1em;
-    transition: color 0.3s;
+    transition: color 0.3s, transform 0.3s;
 }
 
 nav a:hover,
 nav a:focus,
 nav a:active {
-    color: #FFD700; /* Yellow */
+    color: #ffd600; /* Bright Yellow */
+    transform: scale(1.1);
 }
 
 main {
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
+    padding: 0 20px;
 }
 
+/* Slideshow Styles */
 .slideshow-container {
     position: relative;
-    max-width: 100%;
-    margin: auto;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    border-radius: 10px;
-    overflow: hidden;
+    max-width: 960px; /* Set a smaller max width */
+    height: 540px; /* Set a smaller height */
+    margin: auto; /* Center the slideshow */
+    overflow: hidden; /* Hide overflow */
+    border: 1px solid #ccc; /* Optional: Add a border for visual clarity */
 }
 
 .slide {
-    display: none;
+    display: none; /* Hide slides by default */
+    width: 100%; /* Ensure the slide takes up full width */
+    height: 100%; /* Ensure the slide takes up full height */
+}
+
+.slide img {
+    width: 100%; /* Make images take up full width of the slide */
+    height: 100%; /* Make images take up full height of the slide */
+    object-fit: cover; /* Cover the slide area without distortion */
 }
 
 .fade {
-    -webkit-animation-name: fade;
-    -webkit-animation-duration: 1.5s;
-    animation-name: fade;
-    animation-duration: 1.5s;
-}
-
-@-webkit-keyframes fade {
-    from {opacity: .4} 
-    to {opacity: 1}
+    animation: fade 1.5s; /* Fade animation for slides */
 }
 
 @keyframes fade {
-    from {opacity: .4} 
-    to {opacity: 1}
+    from { opacity: 0.4; }
+    to { opacity: 1; }
 }
-
+/* Dots Navigation */
 .dots-container {
     text-align: center;
     padding: 20px 0;
 }
 
 .dot {
-    height: 15px;
-    width: 15px;
+    height: 12px;
+    width: 12px;
     margin: 0 5px;
     background-color: #bbb;
     border-radius: 50%;
@@ -88,31 +99,33 @@ main {
 }
 
 .dot.active {
-    background-color: #4B0082; /* Purple */
+    background-color: #6a1b9a; /* Deep Purple */
 }
 
-/* General button style */
+/* General Button Style */
 button {
-    background-color: #4B0082; /* Purple */
+    background-color: #6a1b9a; /* Deep Purple */
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 24px;
     margin: 10px;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 button:hover {
-    background-color: #800080; /* Darker Purple */
+    background-color: #8e24aa; /* Lighter Purple */
+    transform: translateY(-2px);
 }
 
 /* Quotes Section */
 .quotes {
     background-color: #ffffff;
-    padding: 40px 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    padding: 40px 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     margin-top: 20px;
     max-width: 800px;
@@ -120,8 +133,9 @@ button:hover {
 }
 
 .quotes h2 {
-    color: #4B0082; /* Purple */
+    color: #6a1b9a; /* Deep Purple */
     margin-bottom: 20px;
+    font-size: 1.8em;
 }
 
 blockquote {
@@ -129,7 +143,8 @@ blockquote {
     color: #555;
     margin: 20px 0;
     padding-left: 20px;
-    border-left: 5px solid #4B0082; /* Purple */
+    border-left: 5px solid #6a1b9a; /* Deep Purple */
+    position: relative;
 }
 
 blockquote cite {
@@ -138,4 +153,105 @@ blockquote cite {
     color: #333;
     font-size: 1em;
     font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.2em;
+    }
+
+    nav a {
+        margin: 0 5px;
+        font-size: 1em;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .quotes {
+        padding: 30px 20px;
+    }
+
+    .quotes h2 {
+        font-size: 1.5em;
+    }
+
+    blockquote {
+        padding-left: 15px;
+    }
+
+    .dot {
+        height: 10px;
+        width: 10px;
+    }
+}
+
+/* Additional Styles for Mobile Devices */
+@media (max-width: 480px) {
+    header {
+        padding: 15px 0;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    nav a {
+        font-size: 0.9em;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+
+    .quotes {
+        padding: 20px 15px;
+    }
+
+    .quotes h2 {
+        font-size: 1.3em;
+    }
+
+    blockquote {
+        padding-left: 10px;
+    }
+}
+
+footer {
+    background-color: #333; /* Dark background */
+    color: white; /* White text */
+    text-align: center; /* Centered text */
+    padding: 20px 0; /* Padding for top and bottom */
+    position: relative; /* Positioning for layout */
+    bottom: 0; /* Stick to the bottom */
+    width: 100%; /* Full width */
+}
+
+.footer-content {
+    max-width: 1200px; /* Max width for content */
+    margin: auto; /* Center the content */
+}
+
+footer nav ul {
+    list-style: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+footer nav ul li {
+    display: inline; /* Inline list items */
+    margin: 0 15px; /* Spacing between items */
+}
+
+footer nav a {
+    color: white; /* White text for links */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+footer nav a:hover {
+    color: #ffd600; /* Change color on hover */
 }
