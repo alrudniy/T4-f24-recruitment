@@ -23,10 +23,14 @@ SCOPES = []
 
 @App.route("/send_code", methods = ["POST"])
 def send_code():
-    if request.method == "POST":
-        try:
-            request_data = request.get_json()
-            phonenumber = request_data["phone"]
+    if request.method != "POST":
+        return {
+            "code": -1,
+            "msg": "Method not allowed"
+        }
+    try:
+        request_data = request.get_json()
+        phonenumber = request_data["phone"]
         except Exception as e:
             return {
                 "code": 1,
@@ -50,9 +54,13 @@ def send_code():
         
 @App.route("/login_password", methods = ["POST"])
 def login_password():
-    if request.method == "POST":
-        request_data = request.get_json()
-        username = request_data["username"]
+    if request.method != "POST":
+        return {
+            "code": -1,
+            "msg": "Method not allowed"
+        }
+    request_data = request.get_json()
+    username = request_data["username"]
         password = request_data["password"]
         user = User.query.filter(User.username == username).first()
         if not user:
@@ -89,9 +97,13 @@ def check_verification_code(phone, code, expire_time = 15 * 60 * 1000):
         
 @App.route("/login_code", methods = ["POST"])
 def login_code():
-    if request.method == "POST":
-        request_data = request.get_json()
-        phone = request_data["phone"]
+    if request.method != "POST":
+        return {
+            "code": -1,
+            "msg": "Method not allowed"
+        }
+    request_data = request.get_json()
+    phone = request_data["phone"]
         code = request_data["code"]
         user = User.query.filter(User.phone_number == phone).first()
         if not user:
@@ -118,10 +130,14 @@ def login_code():
         
 @App.route("/register", methods = ["POST"])
 def register():
-    if request.method == "POST":
-        try:
-            request_data = request.get_json()
-            phone = request_data["phone"]
+    if request.method != "POST":
+        return {
+            "code": -1,
+            "msg": "Method not allowed"
+        }
+    try:
+        request_data = request.get_json()
+        phone = request_data["phone"]
             first_name = request_data["firstName"]
             last_name = request_data["lastName"]
             email = request_data["email"]
