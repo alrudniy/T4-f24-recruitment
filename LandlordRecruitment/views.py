@@ -162,10 +162,15 @@ def register():
 @App.route("/create_enquiry", methods = ["POST"])
 def send_enquiry():
 
-    if request.method == "POST":
-        try:
-            request_data = request.get_json()
-            category = request_data.get("category")  # Use .get() consistently
+    if request.method != "POST":
+        return {
+            "code": -1,
+            "msg": "Method not allowed" # Deny non-POST requests
+        }
+
+    try:
+        request_data = request.get_json()
+        category = request_data.get("category")
             phone_number = request_data.get("phone_number")
             email_addr = request_data.get("email_addr")
             username = request_data.get("username") # Get username separately
