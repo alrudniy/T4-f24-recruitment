@@ -130,39 +130,34 @@ def register():
         username = request_data["username"]
     except Exception as e:
         return {
-                "code": 1,
-                "msg": f"Insufficent parameters, {e}"
-            }
+            "code": 1,
+            "msg": f"Insufficent parameters, {e}"
+        }
             
-        new_user = User()
-        new_user.phone_number = phone
-        new_user.password_hash = generate_password_hash(password)
-        new_user.first_name = first_name
-        new_user.last_name = last_name
-        new_user.email_addr = email
-        new_user.username = username
-        new_user.is_admin = False
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-        except Exception as e:
-            return {
-                "code": 2,
-                "msg": f"Database connection error, {e}"
-            }
+    new_user = User()
+    new_user.phone_number = phone
+    new_user.password_hash = generate_password_hash(password)
+    new_user.first_name = first_name
+    new_user.last_name = last_name
+    new_user.email_addr = email
+    new_user.username = username
+    new_user.is_admin = False
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception as e:
         return {
-            "code": 0,
-            "msg": "Success"
+            "code": 2,
+            "msg": f"Database connection error, {e}"
         }
-    else:
-        return {
-            "code": -1,
-            "msg": "invalid method"
-        }
+    return {
+        "code": 0,
+        "msg": "Success"
+    }
+
 
 @App.route("/create_enquiry", methods = ["POST"])
-def send_enquiry():
-
+def create_enquiry():
     if request.method != "POST":
         return {
             "code": -1,
