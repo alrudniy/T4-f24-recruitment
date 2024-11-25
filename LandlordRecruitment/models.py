@@ -39,3 +39,4 @@ class NewVerificationCode(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(6))
     expiration_time = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
