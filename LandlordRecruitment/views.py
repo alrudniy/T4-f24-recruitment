@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, flash, abort, request, make_response, jsonify
-from LandlordRecruitment.models import User, Verification_code
+from LandlordRecruitment.models import User, Verification_code, Enquiry
 #import LandlordRecruitment.models
 from LandlordRecruitment import App, db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,8 +7,19 @@ import flask_login
 import random
 import datetime
 
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
 string_pool = "0123456789"
 verification_code = dict()
+
+# Google api things
+creds = None
+SCOPES = []
+
 
 @App.route("/send_code", methods = ["POST"])
 def send_code():
@@ -147,3 +158,42 @@ def register():
             "code": -1,
             "msg": "invalid method"
         }
+
+@App.route("/create_enquiry", methods = ["POST"])
+def send_enquiry():
+    
+    if request.method == "POST":
+        try:
+            request_data = request.get_json()
+            catagory = request_data["catagory"]
+            phone_number = request_data.get("phone_number", None)
+            email_addr = request_data["email_addr"]
+            username = request_data.get("phone_number", None)
+            content = request_data["content"]
+            replied = 0
+        except Exception as e:
+            return {
+                "code": 1,
+                "msg": f"Insufficent parameters, {e}"
+            }
+        enquiry = Enquiry()
+        enquiry.catagory = catagory
+        enquiry.phone_number = phone_number
+        enquiry.email_addr = email_addr
+        enquiry.username = username
+        enquiry.content = content
+        enquiry.replied = replied
+        try:
+            db.session.add(enquiry)
+            db.session.commit()
+        except Exception as e:
+            return {
+                "code": 2,
+                "msg": f"Database error. {e}"
+            }
+        return {
+            "code": 0,
+            "msg": "Enquiry created",
+            "data": f"{request_data}"
+        }
+    
