@@ -31,12 +31,12 @@ def send_code():
     try:
         request_data = request.get_json()
         phonenumber = request_data["phone"]
-        except Exception as e:
-            return {
-                "code": 1,
-                "msg": f"Insufficent parameters, {e}"
-            }
-        code = ""
+    except Exception as e:
+        return {
+            "code": 1,
+            "msg": f"Insufficent parameters, {e}"
+        }
+    code = ""
         for _ in range(6):
             code += random.sample(string_pool, 1)[0]
         verification_code[phonenumber] = Verification_code(code)
@@ -61,15 +61,15 @@ def login_password():
         }
     request_data = request.get_json()
     username = request_data["username"]
-        password = request_data["password"]
-        user = User.query.filter(User.username == username).first()
-        if not user:
-            return {
-                "code": 1,
-                "msg": "Account not exist"
-            }
-        elif not check_password_hash(user.password_hash, password):
-            return {
+    password = request_data["password"]
+    user = User.query.filter(User.username == username).first()
+    if not user:
+        return {
+            "code": 1,
+            "msg": "Account not exist"
+        }
+    elif not check_password_hash(user.password_hash, password):
+        return {
                 "code": 2,
                 "msg": "Password or username not correct"
             }
@@ -104,15 +104,15 @@ def login_code():
         }
     request_data = request.get_json()
     phone = request_data["phone"]
-        code = request_data["code"]
-        user = User.query.filter(User.phone_number == phone).first()
-        if not user:
-            return {
-                "code": 1,
-                "msg": "Phone number not exist"
-            }
-        elif not check_verification_code(phone, code):
-            return {
+    code = request_data["code"]
+    user = User.query.filter(User.phone_number == phone).first()
+    if not user:
+        return {
+            "code": 1,
+            "msg": "Phone number not exist"
+        }
+    elif not check_verification_code(phone, code):
+        return {
                 "code": 2,
                 "msg": "Verification code not correct"
             }
@@ -138,13 +138,13 @@ def register():
     try:
         request_data = request.get_json()
         phone = request_data["phone"]
-            first_name = request_data["firstName"]
-            last_name = request_data["lastName"]
-            email = request_data["email"]
-            password = request_data["password"]
-            username = request_data["username"]
-        except Exception as e:
-            return {
+        first_name = request_data["firstName"]
+        last_name = request_data["lastName"]
+        email = request_data["email"]
+        password = request_data["password"]
+        username = request_data["username"]
+    except Exception as e:
+        return {
                 "code": 1,
                 "msg": f"Insufficent parameters, {e}"
             }
