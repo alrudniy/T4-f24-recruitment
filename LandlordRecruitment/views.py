@@ -199,3 +199,19 @@ def create_enquiry():
         "msg": "Enquiry created",
         "enquiry_id": enquiry.id # Return enquiry ID
     }
+@App.route('/enquiries/<int:enquiry_id>', methods=['GET'])
+def get_enquiry(enquiry_id):
+    enquiry = Enquiry.query.get(enquiry_id)
+    if enquiry:
+        return jsonify({
+            'id': enquiry.id,
+            'phone_number': enquiry.phone_number,
+            'category': enquiry.category,
+            'email_addr': enquiry.email_addr,
+            'username': enquiry.username,
+            'content': enquiry.content,
+            'created_time': enquiry.created_time.isoformat(),
+            'replied': enquiry.replied
+        })
+    else:
+        return jsonify({'code': 1, 'msg': 'Enquiry not found'}), 404
