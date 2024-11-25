@@ -31,8 +31,9 @@ class Enquiry(db.Model):
     catagory = db.Column(db.Integer)
     email_addr = db.Column(db.String(128))
     content = db.Column(db.Text)
-    created_time = db.DateTime()
+    created_time = db.Column(db.DateTime)
     replied = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class NewVerificationCode(db.Model):
     id = db.Column(db.Integer, primary_key=True)
