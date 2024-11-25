@@ -33,3 +33,8 @@ class Enquiry(db.Model):
     content = db.Column(db.Text)
     created_time = db.DateTime()
     replied = db.Column(db.Integer)
+
+class NewVerificationCode(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(6))
+    expiration_time = db.Column(db.DateTime)
