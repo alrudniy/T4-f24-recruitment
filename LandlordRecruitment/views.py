@@ -161,28 +161,30 @@ def register():
 
 @App.route("/create_enquiry", methods = ["POST"])
 def send_enquiry():
-    
+
     if request.method == "POST":
         try:
             request_data = request.get_json()
-            catagory = request_data["catagory"]
-            phone_number = request_data.get("phone_number", None)
-            email_addr = request_data["email_addr"]
-            username = request_data.get("phone_number", None)
-            content = request_data["content"]
+            category = request_data.get("category")  # Use .get() consistently
+            phone_number = request_data.get("phone_number")
+            email_addr = request_data.get("email_addr")
+            username = request_data.get("username") # Get username separately
+            content = request_data.get("content")
             replied = 0
         except Exception as e:
             return {
                 "code": 1,
-                "msg": f"Insufficent parameters, {e}"
+                "msg": f"Insufficient parameters, {e}" # Fix typo
             }
         enquiry = Enquiry()
-        enquiry.catagory = catagory
+        enquiry.category = category # Fix typo
         enquiry.phone_number = phone_number
         enquiry.email_addr = email_addr
         enquiry.username = username
         enquiry.content = content
         enquiry.replied = replied
+        enquiry.created_time = datetime.datetime.now() # Add timestamp
+
         try:
             db.session.add(enquiry)
             db.session.commit()
@@ -194,6 +196,5 @@ def send_enquiry():
         return {
             "code": 0,
             "msg": "Enquiry created",
-            "data": f"{request_data}"
+            "enquiry_id": enquiry.id # Return enquiry ID
         }
-    
