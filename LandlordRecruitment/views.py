@@ -37,20 +37,15 @@ def send_code():
             "msg": f"Insufficent parameters, {e}"
         }
     code = ""
-        for _ in range(6):
-            code += random.sample(string_pool, 1)[0]
-        verification_code[phonenumber] = Verification_code(code)
-        # TODO: call 3rd party api to send the code
-        return {
-            "code": 0,
-            "msg": "Verification code sent",
-            "code": code
-        }
-    else:
-        return {
-            "code": -1,
-            "msg": "invalid method"
-        }
+    for _ in range(6):
+        code += random.sample(string_pool, 1)[0]
+    verification_code[phonenumber] = Verification_code(code)
+    # TODO: call 3rd party api to send the code
+    return {
+        "code": 0,
+        "msg": "Verification code sent",
+        "code": code
+    }
         
 @App.route("/login_password", methods = ["POST"])
 def login_password():
@@ -70,19 +65,14 @@ def login_password():
         }
     elif not check_password_hash(user.password_hash, password):
         return {
-                "code": 2,
-                "msg": "Password or username not correct"
-            }
-        else:
-            #flask_login.login_user(user)
-            return {
-                "code": 0,
-                "msg": "Login success"
-            }
+            "code": 2,
+            "msg": "Password or username not correct"
+        }
     else:
+        #flask_login.login_user(user)
         return {
-            "code": -1,
-            "msg": "invalid method"
+            "code": 0,
+            "msg": "Login success"
         }
     #return render_template("login.html", form = Logmsgrm)
 
@@ -113,19 +103,14 @@ def login_code():
         }
     elif not check_verification_code(phone, code):
         return {
-                "code": 2,
-                "msg": "Verification code not correct"
-            }
-        else:
-            #flask_login.login_user(user)
-            return {
-                "code": 0,
-                "msg": "Login success"
-            }
+            "code": 2,
+            "msg": "Verification code not correct"
+        }
     else:
+        #flask_login.login_user(user)
         return {
-            "code": -1,
-            "msg": "invalid method"
+            "code": 0,
+            "msg": "Login success"
         }
         
 @App.route("/register", methods = ["POST"])
