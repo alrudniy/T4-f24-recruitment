@@ -201,6 +201,11 @@ def create_enquiry():
     }
 @App.route('/enquiries/<int:enquiry_id>', methods=['GET'])
 def get_enquiry(enquiry_id):
+    if not enquiry_id:
+        return {
+            "code": -1,
+            "msg": "Enquiry id needed"
+        }
     enquiry = Enquiry.query.get(enquiry_id)
     if enquiry:
         return jsonify({
