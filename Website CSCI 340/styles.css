@@ -18,6 +18,17 @@ header {
     margin-bottom: 20px;
 }
 
+.header-container {
+    display: flex;
+    align-items: center; /* Vertically align image and text */
+}
+
+.header-container img {
+    float: left;
+    height: 50px;
+    margin-right: 10px; /* Add some space between image and text */
+}
+
 h1 {
     margin: 0;
     font-size: 2.5em;
