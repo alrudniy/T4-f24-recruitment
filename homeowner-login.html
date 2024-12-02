@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homeowner Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Family_Promise.png" type="image/png">
+</head>
+<body class="flex-container">
+    <header>
+        <h1>Homeowner Login</h1>
+    </header>
+    <main>
+        <form id="homeownerLoginForm" action="http://localhost:5000/login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" class="admin-homeowner-button">Submit</button>
+        </form>
+        <div id="verificationCode" style="display: none;">
+            <label for="verification">Enter Verification Code:</label>
+            <input type="text" id="verification" name="verification" required>
+            <button onclick="verifyHomeowner()" class="admin-homeowner-button">Verify</button>
+        </div>
+        <script>
+            let homeownerVerificationCode = '';
+
+            document.getElementById('homeownerLoginForm').onsubmit = async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                // Send POST request to the backend
+                try {
+                    const response = await fetch('http://localhost:5000/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, password }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    // Handle response from the server
+                    const result = await response.json();
+                    if (result.success) {
+                        homeownerVerificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit code
+                        alert('Verification code sent: ' + homeownerVerificationCode); // Simulate sending the code
+                        document.getElementById('verificationCode').style.display = 'block';
+                    } else {
+                        alert(result.message); // Show error message from the server
+                    }
+                } catch (error) {
+                    alert('Error sending request: ' + error.message);
+                }
+            };
+
+            function verifyHomeowner() {
+                const enteredCode = document.getElementById('verification').value;
+                if (enteredCode === homeownerVerificationCode) {
+                    alert('Homeowner verified!');
+                    // Redirect to home.html
+                    window.location.href = 'home.html';
+                } else {
+                    alert('Invalid verification code. Please try again.');
+                }
+            }
+        </script>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Family Promise. All rights reserved.</p>
+            <nav>
+                <ul>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+</body>
+</html>
