@@ -19,7 +19,7 @@ class User(db.Model, UserMixin):
     def validatePassword(self, password):
         return check_password_hash(self.passwordHash, password)
     
-class Enquiry(db.Model):
+class Enquiry(db.Model): 
     id = db.Column(db.Integer, primary_key = True)
     phone_number = db.Column(db.String(16))
     catagory = db.Column(db.Integer)
