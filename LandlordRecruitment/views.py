@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, flash, abort, request, make_response, jsonify
-from LandlordRecruitment.models import User, Verification_code, Enquiry
+from LandlordRecruitment.models import User, VerificationCode, Enquiry
 #import LandlordRecruitment.models
 from LandlordRecruitment import App, db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,19 +7,8 @@ import flask_login
 import random
 import datetime
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
 string_pool = "0123456789"
-verification_code = dict()
-
-# Google api things
-creds = None
-SCOPES = []
-
 
 @App.route("/send_code", methods = ["POST"])
 def send_code():
@@ -39,8 +28,25 @@ def send_code():
     code = ""
     for _ in range(6):
         code += random.sample(string_pool, 1)[0]
-    verification_code[phonenumber] = Verification_code(code)
-    # TODO: call 3rd party api to send the code
+    
+    verification_code = VerificationCode()
+    verification_code.code = code
+    verification_code.expiration_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
+    user = User.query.filter(User.phone_number == phonenumber).first()
+    if not user:
+        return {
+            "code": 2,
+            "msg": "User does not exist"
+        }
+    verification_code.user_id = user.id
+    try:
+        db.session.add(verification_code)
+        db.session.commit()
+    except Exception as e:
+        return {
+            "code": 2,
+            "msg": f"Database connection error, {e}"
+        }
     return {
         "code": 0,
         "msg": "Verification code sent",
@@ -76,14 +82,14 @@ def login_password():
         }
     #return render_template("login.html", form = Logmsgrm)
 
-def check_verification_code(phone, code, expire_time = 15 * 60 * 1000):
-    db_code = verification_code.get(phone, None)
-    if not db_code:
+def check_verification_code(id, input_code, expire_time = datetime.timedelta(minutes=15)):
+    code = VerificationCode.query.filter(VerificationCode.id == id).first()
+    if not code:
         return False
-    now = datetime.datetime.now().timestamp()
-    if now - db_code.create_time > expire_time:
+    now = datetime.datetime.now()
+    if now - code.expiration_time > expire_time:
         return False
-    return  db_code.code == code
+    return code.code == input_code
         
 @App.route("/login_code", methods = ["POST"])
 def login_code():
@@ -101,7 +107,7 @@ def login_code():
             "code": 1,
             "msg": "Phone number not exist"
         }
-    elif not check_verification_code(phone, code):
+    elif not check_verification_code(user.id, code):
         return {
             "code": 2,
             "msg": "Verification code not correct"
@@ -199,6 +205,7 @@ def create_enquiry():
         "msg": "Enquiry created",
         "enquiry_id": enquiry.id # Return enquiry ID
     }
+
 @App.route('/enquiries/<int:enquiry_id>', methods=['GET'])
 def get_enquiry(enquiry_id):
     if not enquiry_id:
@@ -219,4 +226,7 @@ def get_enquiry(enquiry_id):
             'replied': enquiry.replied
         })
     else:
-        return jsonify({'code': 1, 'msg': 'Enquiry not found'}), 404
+        return {
+            'code': 1, 
+            'msg': 'Enquiry not found'
+        }

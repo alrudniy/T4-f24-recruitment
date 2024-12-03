@@ -3,12 +3,6 @@ from LandlordRecruitment import db
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 
-class Verification_code():
-    def __init__ (self, code):
-        self.code = code
-        self.create_time = datetime.datetime.now().timestamp()
-    
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     phone_number = db.Column(db.String(16), unique = True)
@@ -35,8 +29,9 @@ class Enquiry(db.Model):
     replied = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-class NewVerificationCode(db.Model):
+class VerificationCode(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(6))
     expiration_time = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    is_usd = db.Column(db.Boolean, default = False)
