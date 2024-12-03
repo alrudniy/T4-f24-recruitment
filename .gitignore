@@ -4,7 +4,6 @@ __pycache__/
 
 # Node.js modules
 node_modules
-
 # macOS specific files
 .DS_Store
 /dist
@@ -27,5 +26,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
 .aider*
 .env
