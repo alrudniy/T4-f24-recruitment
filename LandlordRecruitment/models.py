@@ -18,3 +18,24 @@ class User(db.Model, UserMixin):
     
     def validatePassword(self, password):
         return check_password_hash(self.passwordHash, password)
+    
+
+class Enquiry(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    phone_number = db.Column(db.String(16))
+    catagory = db.Column(db.Integer)
+    email_addr = db.Column(db.String(128))
+    content = db.Column(db.Text)
+    created_time = db.Column(db.DateTime)
+    replied = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+class VerificationCode(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(6))
+    expiration_time = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    is_usd = db.Column(db.Boolean, default = False)
+        return check_password_hash(self.passwordHash, password)
+
