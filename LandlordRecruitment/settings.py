@@ -6,5 +6,6 @@
 username = "root"
 password = "root"
 SQLALCHEMY_DATABASE_URI = f"mysql://{username}:{password}@127.0.0.1:3306/csci340"
+secret_key = "s3cr3tk3y"
 #SQLALCHEMY_TRACK_MODIFICATIONS = False
 #test = 1234556

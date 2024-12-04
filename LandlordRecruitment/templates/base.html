@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
+    {% block title %}
+    {% endblock %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='js/script.js') }}" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='Family_Promise.png') }}" type="image/png">
+    {% block js %}
+    {% endblock %}
 </head>
 <body>
     <header>
         {% block header %}
         {% endblock %}
     </header>
+    {% for msg in get_flashed_messages() %}
+        <div class="alert alert-info fade show">
+            {{ msg }}
+        </div>
+    {% endfor %}
     <main>
         {% block body %}
         {% endblock %}

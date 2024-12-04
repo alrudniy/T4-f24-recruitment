@@ -5,11 +5,12 @@ from flask_bootstrap import Bootstrap
 
 App = Flask("LandlordRecruitment")
 App.config.from_pyfile("settings.py")
+App.secret_key = 'super secret key'
 db = SQLAlchemy(App)
 bootstrap = Bootstrap(App)
 
 loginManager = LoginManager(App)
-loginManager.login_view = "/login"
+loginManager.login_view = "/"
 loginManager.login_message = "Please login to continue"
 
 from LandlordRecruitment import views, models, extensions

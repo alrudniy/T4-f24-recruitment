@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, abort, request, make_response, jsonify
 from LandlordRecruitment.models import User, VerificationCode, Enquiry
-#import LandlordRecruitment.models
-from LandlordRecruitment import App, db
+from flask_login import login_required
+from LandlordRecruitment import App, db, loginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 import flask_login
 import random
@@ -10,19 +10,28 @@ import datetime
 
 string_pool = "0123456789"
 
+@App.route("/logout")
+def logout():
+    flask_login.logout_user()
+    return redirect(url_for("index"))
+
+@App.route("/")
 @App.route("/index")
 def index():
     return render_template("index.html")
 
 @App.route("/homeowner_index")
+@login_required
 def homeowner_index():
     return render_template("homeowner_index.html")
 
 @App.route("/faqs")
+@login_required
 def faqs():
     return render_template("faqs.html")
 
 @App.route("/roadmap")
+@login_required
 def roadmap():
     return render_template("roadmap.html")
 
@@ -145,7 +154,7 @@ def login_code():
         }
     else:
         #flask_login.login_user(user)
-
+        flask_login.login_user(user)
         return {
             "code": 0,
             "msg": "Login success"
