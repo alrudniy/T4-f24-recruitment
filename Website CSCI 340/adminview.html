@@ -16,8 +16,8 @@
         <section class="upload-section">
             <h2>Upload Homepage Images</h2>
             <form action="/upload" method="POST" enctype="multipart/form-data">
-                <input type="file" name="image" accept="image/*" required>
-                <button type="submit">Upload</button>
+                <input type="file" name="image" accept="image/*" required id="imageInput">
+                <img id="imagePreview" style="max-width: 200px; max-height: 200px; display: none;"> <button type="submit">Upload</button>
             </form>
             <p>Uploaded images will be displayed on the homepage.</p>
         </section>
@@ -54,5 +54,26 @@
             </table>
         </section>
     </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                }
+
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
