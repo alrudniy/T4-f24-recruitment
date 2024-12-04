@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title Index</title>
-</head>
-<body>
-    <h1>Title </h1>
-</body>
-</html>
+{% extends 'base.html'%}
+{% block header %}
+<h1>Welcome to the Main Page</h1>
+{% endblock %}
+{% block body %}
+    <p>Are you an Admin or a Homeowner?</p>
+    <a href="{{ url_for('admin_login') }}"><button>Admin</button></a>
+    <a href="{{ url_for('homeowner_login') }}"><button>Homeowner</button></a>
+{% endblock %}

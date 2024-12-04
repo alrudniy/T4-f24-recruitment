@@ -10,6 +10,30 @@ import datetime
 
 string_pool = "0123456789"
 
+@App.route("/index")
+def index():
+    return render_template("index.html")
+
+@App.route("/homeowner_index")
+def homeowner_index():
+    return render_template("homeowner_index.html")
+
+@App.route("/faqs")
+def faqs():
+    return render_template("faqs.html")
+
+@App.route("/roadmap")
+def roadmap():
+    return render_template("roadmap.html")
+
+@App.route("/admin_login")
+def admin_login():
+    return render_template("admin_login.html")
+
+@App.route("/homeowner_login")
+def homeowner_login():
+    return render_template("admin_login.html")
+
 @App.route("/send_code", methods = ["POST"])
 def send_code():
     if request.method != "POST":
@@ -25,6 +49,7 @@ def send_code():
             "code": 1,
             "msg": f"Insufficent parameters, {e}"
         }
+
     code = ""
     for _ in range(6):
         code += random.sample(string_pool, 1)[0]
@@ -39,6 +64,7 @@ def send_code():
             "msg": "User does not exist"
         }
     verification_code.user_id = user.id
+    VerificationCode.query.filter(VerificationCode.user_id == user.id).delete()
     try:
         db.session.add(verification_code)
         db.session.commit()
@@ -50,7 +76,7 @@ def send_code():
     return {
         "code": 0,
         "msg": "Verification code sent",
-        "code": code
+        "v_code": code
     }
         
 @App.route("/login_password", methods = ["POST"])
@@ -83,14 +109,19 @@ def login_password():
     #return render_template("login.html", form = Logmsgrm)
 
 def check_verification_code(id, input_code, expire_time = datetime.timedelta(minutes=15)):
-    code = VerificationCode.query.filter(VerificationCode.id == id).first()
+    code = VerificationCode.query.filter(VerificationCode.user_id == id).filter(VerificationCode.is_used == 0).first()
     if not code:
         return False
     now = datetime.datetime.now()
     if now - code.expiration_time > expire_time:
         return False
-    return code.code == input_code
-        
+    if code.code == input_code:
+        code.is_used = 1
+        db.session.commit()
+        return True
+    return False
+
+
 @App.route("/login_code", methods = ["POST"])
 def login_code():
     if request.method != "POST":
@@ -114,6 +145,7 @@ def login_code():
         }
     else:
         #flask_login.login_user(user)
+
         return {
             "code": 0,
             "msg": "Login success"

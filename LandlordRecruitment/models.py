@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
 class Enquiry(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     phone_number = db.Column(db.String(16))
-    catagory = db.Column(db.Integer)
+    category = db.Column(db.Integer)
     email_addr = db.Column(db.String(128))
     content = db.Column(db.Text)
     created_time = db.Column(db.DateTime)
@@ -34,4 +34,4 @@ class VerificationCode(db.Model):
     code = db.Column(db.String(6))
     expiration_time = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    is_usd = db.Column(db.Boolean, default = False)
+    is_used = db.Column(db.Boolean, default = False)

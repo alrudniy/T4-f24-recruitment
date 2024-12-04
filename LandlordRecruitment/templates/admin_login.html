@@ -1,0 +1,59 @@
+{% extends 'base.html'%}
+{% block body %}
+    <main>
+        <div id="adminLoginForm">
+            <label for="adminLogin">Email or Phone:</label>
+            <input type="text" id="adminLogin" name="adminLogin" required>
+            <button type="submit" id="send_code" class="admin-homeowner-button">Submit</button>
+        </div>
+        <div id="verificationCode" style="display: none;">
+            <label for="verification">Enter Verification Code:</label>
+            <input type="text" id="verification" name="verification">
+            <button onclick="verifyAdmin()" class="admin-homeowner-button">Verify</button>
+        </div>
+        <script>
+            document.getElementById('send_code').onclick = function(e) {
+                var userId = document.getElementById("adminLogin").value
+                var jsonData = {"phone": userId}
+                $.ajax({
+                    url: '/send_code',
+                    type: 'POST',
+                    cache: false,
+                    data: JSON.stringify(jsonData),
+                    contentType: "application/json",
+                    success: function(res){
+                        if (res.code != 0){
+                            alert("Fail! " + res.msg)
+                        }
+                        else{
+                            alert(res.v_code)
+                            document.getElementById('verificationCode').style.display = 'block';
+                        }
+                    }
+                })
+            };
+
+            function verifyAdmin() {
+                var jsonData = {
+                    "phone": document.getElementById("adminLogin").value,
+                    "code": document.getElementById("verification").value
+                }
+                $.ajax({
+                    url: '/login_code',
+                    type: 'POST',
+                    cache: false,
+                    data: JSON.stringify(jsonData),
+                    contentType: "application/json",
+                    success: function(res){
+                        if (res.code != 0){
+                            alert("Fail! " + res.msg)
+                        }
+                        else{
+                            window.location.href = 'homeowner_index'
+                        }
+                    }
+                })
+            }
+        </script>
+    </main>
+{% endblock %}
