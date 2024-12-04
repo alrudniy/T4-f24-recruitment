@@ -1,18 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html'%}
+{% block title %}
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+{% endblock %}
+{% block header %}
+    <h1>Admin Dashboard</h1>
+    <nav>
+        <a href="{{url_for('homeowner_index')}}">Home</a> |
+        <a href="{{url_for('faqs')}}">FAQs</a> |
+        <a href="{{url_for('roadmap')}}">RoadMap</a> |
+        <a href="{{url_for('logout')}}">Logout</a>
+     
+    </nav>
+{% endblock %}
+{% block body %}
     <div class="container">
-        <header class="header">
-            <img src="Family_Promise.png" alt="Family Promise Logo" style="float: left; height: 50px;">
-            <h1>Admin Dashboard</h1>
-        </header>
-
         <section class="upload-section">
             <h2>Upload Homepage Images</h2>
             <form action="/upload" method="POST" enctype="multipart/form-data">
@@ -33,7 +34,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- User rows will be dynamically added here -->
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.first_name + " "+ user.last_name }}</td>
+                        <td>{{ user.email_addr }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </section>
@@ -54,5 +61,4 @@
             </table>
         </section>
     </div>
-</body>
-</html>
+{% endblock %}

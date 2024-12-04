@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, abort, request, make_response, jsonify
 from LandlordRecruitment.models import User, VerificationCode, Enquiry
-from flask_login import login_required
+from flask_login import login_required, current_user
 from LandlordRecruitment import App, db, loginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 import flask_login
@@ -18,7 +18,9 @@ def logout():
 @App.route("/")
 @App.route("/index")
 def index():
-    return render_template("index.html")
+    if not current_user.is_authenticated:
+        return render_template("index.html")
+    return render_template("homeowner_index.html")
 
 @App.route("/homeowner_index")
 @login_required
@@ -42,6 +44,15 @@ def admin_login():
 @App.route("/homeowner_login")
 def homeowner_login():
     return render_template("admin_login.html")
+
+@App.route("/admin")
+@login_required
+def admin():
+    if not current_user.is_admin:
+        flash("Admin Required")
+        return redirect("homeowner_index")
+    all_users = User.query.all()
+    return render_template("adminview.html", users = all_users)
 
 @App.route("/send_code", methods = ["POST"])
 def send_code():

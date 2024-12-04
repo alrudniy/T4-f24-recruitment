@@ -5,6 +5,11 @@
         <nav>
             <a href="{{url_for('homeowner_index')}}">Home</a> |
             <a href="{{url_for('faqs')}}">FAQs</a>
+            {% if current_user.is_admin %}
+            |
+            <a href="{{url_for('admin')}}">Admin Dashboard</a>
+            {% endif %}
+            | <a href="{{url_for('logout')}}">Logout</a>
         </nav>
     </header>
     <main>

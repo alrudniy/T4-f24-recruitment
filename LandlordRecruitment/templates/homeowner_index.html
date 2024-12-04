@@ -7,7 +7,11 @@
         <h1>Welcome to the Home Page</h1>
         <nav>
             <a href="{{url_for('roadmap')}}">RoadMap</a> |
-            <a href="{{url_for('faqs')}}">FAQs</a>
+            <a href="{{url_for('faqs')}}">FAQs</a> 
+            {% if current_user.is_admin %}
+            |<a href="{{url_for('admin')}}">Admin Dashboard</a>
+            {% endif %}
+            |<a href="{{url_for('logout')}}">Logout</a>
         </nav>
     </header>    
     <main>
