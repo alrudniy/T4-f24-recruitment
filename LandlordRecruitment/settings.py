@@ -1,3 +1,4 @@
+
 #username = "t4"
 #password = "0PJn7OaANQELNVx2"
 #SQLALCHEMY_DATABASE_URI = f"mariadb+mariadbconnector://{username}:{password}@34.125.69.91/f24_housing_db"
@@ -9,3 +10,4 @@ SQLALCHEMY_DATABASE_URI = f"mysql://{username}:{password}@127.0.0.1:3306/csci340
 secret_key = "s3cr3tk3y"
 #SQLALCHEMY_TRACK_MODIFICATIONS = False
 #test = 1234556
+

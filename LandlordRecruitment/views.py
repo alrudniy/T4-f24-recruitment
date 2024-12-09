@@ -6,9 +6,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import flask_login
 import random
 import datetime
-
-
-string_pool = "0123456789"
+from flask import render_template, redirect, url_for, flash, abort, request, make_response
+from LandlordRecruitment.forms import LoginForm
+from LandlordRecruitment import App, db
 
 @App.route("/logout")
 def logout():
