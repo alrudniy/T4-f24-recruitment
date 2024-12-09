@@ -1,0 +1,64 @@
+{% extends 'base.html'%}
+{% block title %}
+    <title>Admin Dashboard</title>
+{% endblock %}
+{% block header %}
+    <h1>Admin Dashboard</h1>
+    <nav>
+        <a href="{{url_for('homeowner_index')}}">Home</a> |
+        <a href="{{url_for('faqs')}}">FAQs</a> |
+        <a href="{{url_for('roadmap')}}">RoadMap</a> |
+        <a href="{{url_for('logout')}}">Logout</a>
+     
+    </nav>
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <section class="upload-section">
+            <h2>Upload Homepage Images</h2>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/*" required>
+                <button type="submit">Upload</button>
+            </form>
+            <p>Uploaded images will be displayed on the homepage.</p>
+        </section>
+
+        <section class="users-section">
+            <h2>View Users</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.first_name + " "+ user.last_name }}</td>
+                        <td>{{ user.email_addr }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section class="quiz-results-section">
+            <h2>Quiz Results</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Quiz results rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+{% endblock %}

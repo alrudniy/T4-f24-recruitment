@@ -1,0 +1,48 @@
+{% extends 'base.html'%}
+{% block title %}
+    <title>Homepage</title>
+{% endblock %}
+{% block js %}
+    <script src="{{url_for('static', filename='js/script.js')}}"></script>
+{% endblock %}
+
+{% block body %}
+    <header>
+        <h1>Welcome to the Home Page</h1>
+        <nav>
+            <a href="roadmap.html">RoadMap</a> |
+            <a href="faqs.html">FAQs</a>
+        </nav>
+    </header>    
+    <main>
+        <div class="slideshow-container">
+            <div class="slide fade">
+                <img src="slide1.jpg" alt="Slide 1" style="width:100%">
+            </div>
+            <div class="slide fade">
+                <img src="slide2.jpg" alt="Slide 2" style="width:100%">
+            </div>
+            <div class="slide fade">
+                <img src="slide3.jpg" alt="Slide 3" style="width:100%">
+            </div>
+        </div>
+        <div class="dots-container">
+            <span class="dot"></span> 
+            <span class="dot"></span> 
+            <span class="dot"></span> 
+        </div>
+        <section class="quotes">
+            <h2>What Our Homeowners Say</h2>
+            <blockquote>
+                <p>"Family Promise has been a lifesaver for my family. The support and community we have found here are unparalleled."</p>
+                <cite>- John Doe</cite>
+            </blockquote>
+            <blockquote>
+                <p>"Thanks to Family Promise, we now have a stable home and the resources we need to stay independent."</p>
+                <cite>- Jane Smith</cite>
+            </blockquote>
+            <!-- Add more quotes as needed -->
+        </section>
+    </main>
+    <!-- Link to external JavaScript file -->
+{% endblock %}

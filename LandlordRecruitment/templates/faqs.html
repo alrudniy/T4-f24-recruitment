@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block body %}
+    <header>
+        <h1>Frequently Asked Questions</h1>
+        <nav>
+            <a href="{{url_for('homeowner_index')}}">Home</a> |
+            <a href="{{url_for('roadmap')}}">RoadMap</a>
+            {% if current_user.is_admin %}
+            |<a href="{{url_for('admin')}}">Admin Dashboard</a>
+            {% endif %}
+            |<a href="{{url_for('logout')}}">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <section class="faq">
+            <h2>Common Questions</h2>
+            <div class="faq-item">
+                <h3>What is Family Promise?</h3>
+                <p>Family Promise is a nonprofit organization that helps families experiencing homelessness and low-income families achieve sustainable independence through a community-based response.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How can I get involved?</h3>
+                <p>You can get involved by volunteering, donating, or becoming an advocate. Visit our Get Involved page for more details.</p>
+            </div>
+        </section>
+        <section class="submit-question">
+            <h2>Submit Your Question</h2>
+            <div id="questionForm">
+                <label for="name">Your Email:</label>
+                <input type="text" id="name" name="name" required>
+                <p></p>
+                <label for="question">Your Question:</label>
+                <textarea id="question" name="question" required></textarea>
+                <p></p>
+                <button type="submit" id="submitQuestion" class="admin-homeowner-button">Submit</button>
+            </div>
+        </section>
+    </main>
+    <script>
+        document.getElementById('submitQuestion').onclick = function(e) {
+            jsonData = {
+                "email_addr": document.getElementById("name").value,
+                "category": 0,
+                "phone_number": "Null",
+                "username": "Null",
+                "content": document.getElementById("question").textContent
+            }
+            $.ajax({
+                    url: '/create_enquiry',
+                    type: 'POST',
+                    cache: false,
+                    data: JSON.stringify(jsonData),
+                    contentType: "application/json",
+                    success: function(res){
+                        if (res.code != 0){
+                            alert("Fail! " + res.msg)
+                        }
+                        else{
+                            alert("Success! " + res.msg)
+                        }
+                    }
+            })
+        };
+    </script>
+{% endblock %}
